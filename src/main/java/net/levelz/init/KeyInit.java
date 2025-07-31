@@ -10,6 +10,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.levelz.screen.SkillScreen;
+import net.levelz.screen.SkillScreenFull;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 
@@ -21,10 +22,16 @@ public class KeyInit {
     public static void init() {
         // Registering
         KeyBindingHelper.registerKeyBinding(screenKey);
+        KeyBindingHelper.registerKeyBinding(devKey);
         // Callback
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (screenKey.wasPressed()) {
                 client.setScreen(new SkillScreen());
+                return;
+            }
+
+            if (devKey.wasPressed()) {
+                client.setScreen(new SkillScreenFull());
                 return;
             }
         });

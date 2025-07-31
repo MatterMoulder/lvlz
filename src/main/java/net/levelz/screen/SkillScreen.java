@@ -98,7 +98,11 @@ public class SkillScreen extends Screen implements Tab {
                 }
                 PlayerStatsClientPacket.writeC2SIncreaseLevelPacket(this.playerStatsManager, Skill.values()[skillInt], level);
             }));
-            this.levelButtons[i].active = playerStatsManager.getSkillPoints() > 0 && this.playerStatsManager.getSkillLevel(Skill.values()[i]) < ConfigInit.CONFIG.maxLevel;
+            String[] levelBtnTooltip = Text.translatable("text.levelz.gui.level_up_skill.tooltip_custom").getString().split("\n");
+            for (int b = 0; b < levelBtnTooltip.length; b++) {
+                this.levelButtons[i].addTooltip(Text.of(levelBtnTooltip[b]));
+            }
+            this.levelButtons[i].active = false;
         }
 
         WidgetButtonPage infoButton = this.addDrawableChild(new WidgetButtonPage(this.x + 178, this.y + 73, 11, 13, 0, 42, true, false, Text.translatable("text.levelz.more_info"), button -> {
@@ -127,7 +131,7 @@ public class SkillScreen extends Screen implements Tab {
             for (int i = 0; i < levelUpTooltip.length; i++) {
                 levelUpButton.addTooltip(Text.of(levelUpTooltip[i]));
             }
-            levelUpButton.active = !playerStatsManager.isMaxLevel() && (this.playerStatsManager.getNonIndependentExperience() / this.playerStatsManager.getNextLevelExperience()) >= 1;
+            levelUpButton.active = false;
         }
     }
 
@@ -191,14 +195,14 @@ public class SkillScreen extends Screen implements Tab {
 
             boolean skillsAllMaxed = true;
             for (int o = 0; o < this.levelButtons.length; o++) {
-                this.levelButtons[o].active = playerStatsManager.getSkillPoints() > 0 && this.playerStatsManager.getSkillLevel(Skill.values()[o]) < ConfigInit.CONFIG.maxLevel;
+                this.levelButtons[o].active = false;
                 if (skillsAllMaxed) {
                     skillsAllMaxed = this.playerStatsManager.getSkillLevel(Skill.values()[o]) >= ConfigInit.CONFIG.maxLevel;
                 }
             }
             if (skillsAllMaxed && ConfigInit.CONFIG.allowHigherSkillLevel) {
                 for (int o = 0; o < this.levelButtons.length; o++) {
-                    this.levelButtons[o].active = true;
+                    this.levelButtons[o].active = false;
                 }
             }
 
